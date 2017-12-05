@@ -21,7 +21,7 @@
     - deploy-user
     - postgresql
     - nginx
-    - certbot
+#    - certbot
     - ruby
     - rails
     - monit
