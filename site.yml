@@ -19,7 +19,7 @@
   roles:
     - common
     - deploy-user
-    - mysql
+    - postgresql
     - nginx
     - certbot
     - ruby
