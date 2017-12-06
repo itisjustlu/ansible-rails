@@ -3,15 +3,13 @@ Use this ansible playbook to setup a fresh server with the following components:
 
 * Nginx
 * Puma App Server
-* Certbot (Let's Encrypt)
-* MySQL
+* Postgres
 * Memcached
 * Redis
 * Sidekiq
 * Monit (to keep Puma and Sidekiq runnig)
 * Elasticsearch
-* ruby-install
-* chruby
+* RVM
 * Directories to deploy Rails with Capistrano and Puma App Server (see below)
 * Swapfile (useful for small DO instances)
 * Locales
