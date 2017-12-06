@@ -13,6 +13,17 @@
 - name: Restart PostgreSQL
   command: service postgresql restart
 
-# psql -c "CREATE DATABASE deploy"
-# psql -c "CREATE USER deploy with PASSWORD 'urbandevs19'"
-# psql -c "GRANT ALL PRIVILEGES ON DATABASE deploy to deploy;"
+- name: Create user
+  become: yes
+  become_user: 'postgres'
+  command: psql -c "CREATE DATABASE deploy"
+
+- name: Create database
+  become: yes
+  become_user: 'postgres'
+  command: psql -c "CREATE USER deploy with PASSWORD ''"
+
+- name: Grant privileges
+  become: yes
+  become_user: 'postgres'
+  command: psql -c "GRANT ALL PRIVILEGES ON DATABASE deploy to deploy;"
