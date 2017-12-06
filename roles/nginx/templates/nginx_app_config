@@ -1,28 +1,15 @@
-upstream puma_{{ environment }} {
-  server unix:{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/puma.sock fail_timeout=0;
+
+upstream puma {
+  server unix://{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/stackprint-puma.sock;
 }
 
 server {
-  listen 80;
+  listen 80 default_server deferred;
+  server_name dev.stackprint.net;
 
-  server_name {{ deploy_server_hostname }};
   root {{ deploy_dir  }}{{ deploy_app_name }}/current/public;
-  try_files $uri/index.html $uri @puma_{{ environment }};
-
-  error_page 500 502 503 504 /500.html;
-  client_max_body_size 4G;
-  keepalive_timeout 10;
-
-  location @puma_{{ environment }} {
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    proxy_set_header X-Forwarded-Proto http;
-    proxy_pass http://puma_{{ environment }};
-
-    access_log {{ deploy_dir  }}{{ deploy_app_name }}/shared/log/nginx.access.log;
-    error_log {{ deploy_dir  }}{{ deploy_app_name }}/shared/log/nginx.error.log;
-  }
+  access_log {{ deploy_dir  }}{{ deploy_app_name }}/current/log/nginx.access.log;
+  error_log {{ deploy_dir  }}{{ deploy_app_name }}/current/log/nginx.error.log info;
 
   location ^~ /assets/ {
     gzip_static on;
@@ -30,7 +17,20 @@ server {
     add_header Cache-Control public;
   }
 
-  if ($request_method !~ ^(GET|HEAD|PUT|PATCH|POST|DELETE|OPTIONS)$ ){
-    return 405;
+  location ~* \.(jpg|png|jpeg|gif)$ {
+      add_header Access-Control-Allow-Origin *;
   }
+
+  try_files $uri/index.html $uri @puma;
+  location @puma {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    proxy_pass http://puma;
+  }
+
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 10M;
+  keepalive_timeout 10;
 }
