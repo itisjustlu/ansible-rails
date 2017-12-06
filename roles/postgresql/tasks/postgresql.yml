@@ -12,3 +12,7 @@
 
 - name: Restart PostgreSQL
   command: service postgresql restart
+
+# psql -c "CREATE DATABASE deploy"
+# psql -c "CREATE USER deploy with PASSWORD 'urbandevs19'"
+# psql -c "GRANT ALL PRIVILEGES ON DATABASE deploy to deploy;"

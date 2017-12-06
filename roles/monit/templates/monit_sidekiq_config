@@ -1,6 +1,5 @@
 # Monit configuration for Sidekiq
-check process sidekiq_{{ deploy_app_name }}
-  with pidfile "{{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid"
-  start program = "/usr/bin/sudo -u {{ deploy_user }} /bin/bash -c 'cd {{ deploy_dir }}{{ deploy_app_name }}/current && /usr/local/bin/chruby-exec ruby-{{ ruby_version }} -- bundle exec sidekiq  --index 0 --pidfile {{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid --environment {{ environment }}  --logfile {{ deploy_dir }}{{ deploy_app_name }}/shared/log/sidekiq.log -d'"
-
-  stop program = "/usr/bin/sudo -u {{ deploy_user }} /bin/bash -c 'cd {{ deploy_dir }}{{ deploy_app_name }}/current && /usr/local/bin/chruby-exec ruby-{{ ruby_version }}-- bundle exec sidekiqctl stop {{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid'"
+check process sidekiq_stackprint
+    with pidfile {{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid
+    start program = "{{ deploy_dir }}.rvm/bin/rvm default do {{ deploy_dir }}{{ deploy_app_name }}/current/bin/bundle exec sidekiq -d -L {{ deploy_dir }}{{ deploy_app_name }}/shared/log/sidekiq.log -v -C {{ deploy_dir }}{{ deploy_app_name }}/shared/config/sidekiq.yml -e {{ rails_environment }} --pidfile {{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid -r {{ deploy_dir }}{{ deploy_app_name }}/current"
+    stop program = "{{ deploy_dir }}.rvm/bin/rvm default do {{ deploy_dir }}{{ deploy_app_name }}/current/bin/bundle exec sidekiqctl stop {{ deploy_dir }}{{ deploy_app_name }}/shared/tmp/pids/sidekiq.pid 10"
