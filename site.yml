@@ -19,10 +19,10 @@
   roles:
     - common
     - deploy-user
+    - rvm
     - postgresql
     - nginx
 #    - certbot
-    - ruby
     - rails
     - monit
     - memcached
