@@ -1,4 +1,4 @@
-upstream puma_production {
+upstream puma_{{ environment }} {
   server unix:{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/puma.sock fail_timeout=0;
 }
 
@@ -14,7 +14,7 @@ server {
   listen 443;
   server_name {{ deploy_server_hostname }};
   root {{ deploy_dir  }}{{ deploy_app_name }}/current/public;
-  try_files $uri/index.html $uri @puma_production;
+  try_files $uri/index.html $uri @puma_{{ environment }};
 
   ssl on;
   ssl_certificate /etc/letsencrypt/live/{{ deploy_server_hostname }}/fullchain.pem;
@@ -41,12 +41,12 @@ server {
   client_max_body_size 4G;
   keepalive_timeout 10;
 
-  location @puma_production {
+  location @puma_{{ environment }} {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header Host $http_host;
     proxy_redirect off;
     proxy_set_header X-Forwarded-Proto https;
-    proxy_pass http://puma_production;
+    proxy_pass http://puma_{{ environment }};
 
     access_log {{ deploy_dir  }}{{ deploy_app_name }}/shared/log/nginx.access.log;
     error_log {{ deploy_dir  }}{{ deploy_app_name }}/shared/log/nginx.error.log;
