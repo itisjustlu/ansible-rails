@@ -16,14 +16,14 @@
 - name: Create user
   become: yes
   become_user: 'postgres'
-  command: psql -c "CREATE DATABASE deploy"
+  command: psql -c "CREATE DATABASE {{ postgres_user }}"
 
 - name: Create database
   become: yes
   become_user: 'postgres'
-  command: psql -c "CREATE USER deploy with PASSWORD ''"
+  command: psql -c "CREATE USER {{ postgres_user }} with PASSWORD '{{ postgres_user }}'"
 
 - name: Grant privileges
   become: yes
   become_user: 'postgres'
-  command: psql -c "GRANT ALL PRIVILEGES ON DATABASE deploy to deploy;"
+  command: psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ postgres_user }} to {{ postgres_user }};"
