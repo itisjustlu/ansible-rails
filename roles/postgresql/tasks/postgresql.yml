@@ -21,7 +21,7 @@
 - name: Create database
   become: yes
   become_user: 'postgres'
-  command: psql -c "CREATE USER {{ postgres_user }} with PASSWORD '{{ postgres_user }}'"
+  command: psql -c "CREATE USER {{ postgres_user }} with PASSWORD '{{ postgres_password }}'"
 
 - name: Grant privileges
   become: yes
