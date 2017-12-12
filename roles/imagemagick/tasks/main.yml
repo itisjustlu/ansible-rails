@@ -1,0 +1,8 @@
+- name: Install imagemagick
+  apt: pkg=imagemagick state=latest
+
+- name: Install lib
+  apt: pkg=libmagickwand-dev state=latest
+
+- name: Install rsvg
+  apt: pkg=librsvg2-bin state=latest
