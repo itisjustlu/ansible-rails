@@ -46,7 +46,7 @@ puma_threads: 4,16
 rails_environment: production
 
 # Elasticsearch
-elasticsearch_version: 5.6.3
+elasticsearch_version: 2.3.3
 
 # Monit
 monit_sidekiq_enabled: true
