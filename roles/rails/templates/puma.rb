@@ -15,7 +15,7 @@ threads {{ puma_threads }}
 
 
 
-bind 'unix://{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/stackprint-puma.sock'
+bind 'unix://{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/{{ deploy_app_name }}-puma.sock'
 
 workers {{ puma_workers }}
 

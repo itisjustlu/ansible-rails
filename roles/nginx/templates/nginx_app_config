@@ -1,11 +1,11 @@
 
 upstream puma {
-  server unix://{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/stackprint-puma.sock;
+  server unix://{{ deploy_dir  }}{{ deploy_app_name }}/shared/tmp/sockets/{{ deploy_app_name }}-puma.sock;
 }
 
 server {
   listen 80 default_server deferred;
-  server_name dev.stackprint.net;
+  server_name {{ deploy_server_hostname }};
 
   root {{ deploy_dir  }}{{ deploy_app_name }}/current/public;
   access_log {{ deploy_dir  }}{{ deploy_app_name }}/current/log/nginx.access.log;
