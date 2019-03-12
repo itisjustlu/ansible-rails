@@ -1,5 +1,7 @@
 - name: Install Tools
-  apt: name={{ item }} state=latest update_cache=true
+  apt: "{{ item }}"
+  update_cache: true
+  state: present
   with_items:
     - build-essential
     - tmux
